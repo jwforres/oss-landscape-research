@@ -1,0 +1,16 @@
+# Generated outputs (re-created on each run)
+projects-raw.json
+projects-licensed.json
+projects-enriched.json
+report-draft.md
+report-final.md
+review-feedback.json
+callouts.json
+growth-radar.png
+
+# Adversarial review outputs
+review-1.md
+review-2.md
+
+# Local Claude Code settings
+.claude/settings.local.json
