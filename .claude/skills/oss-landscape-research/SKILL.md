@@ -19,18 +19,25 @@ These parameters are hardcoded and do not change between runs:
 - **Corporate flags**: Always flag Red Hat / IBM involvement (contributor, commercial backer, or significant upstream investment). Note the nature of involvement (e.g., "primary commercial backer", "upstream kernel contributions", "joint project with AMD").
 - **Time horizon**: Projects with significant activity in the last 12 months from the current date.
 
+## Output directory
+
+All output files go into a dated run directory: `runs/YYYY-MM-DD/` (using the current date). Create this directory at the start of the run. If a directory for today's date already exists, append a sequence number (e.g., `runs/2026-03-04-2/`).
+
+All checkpoint and deliverable file references below are relative to this run directory. Scripts and reference files remain at the workspace root — only outputs are dated.
+
 ## Execution
 
 Run all 7 phases sequentially. Do not prompt the user between phases. If a phase requires judgment calls (e.g., whether to accept an adversarial review suggestion), apply the rejection criteria defined in that phase and document the decision in the checkpoint file.
 
 ```
-Phase 1: Initial Scan           → projects-raw.json
-Phase 2: License Verification   → projects-licensed.json
-Phase 3: Growth Metrics          → projects-enriched.json
-Phase 4: Report Draft            → report-draft.md
-Phase 5: Adversarial Review      → review-feedback.json
-Phase 6: Gap Fill & Final Report → report-final.md
-Phase 7: Growth Radar PNG        → growth-radar.png
+Phase 0: Setup                   → runs/YYYY-MM-DD/ (create output directory)
+Phase 1: Initial Scan           → runs/YYYY-MM-DD/projects-raw.json
+Phase 2: License Verification   → runs/YYYY-MM-DD/projects-licensed.json
+Phase 3: Growth Metrics          → runs/YYYY-MM-DD/projects-enriched.json
+Phase 4: Report Draft            → runs/YYYY-MM-DD/report-draft.md
+Phase 5: Adversarial Review      → runs/YYYY-MM-DD/review-feedback.json
+Phase 6: Gap Fill & Final Report → runs/YYYY-MM-DD/report-final.md
+Phase 7: Growth Radar PNG        → runs/YYYY-MM-DD/growth-radar.png
 ```
 
 ---
@@ -332,8 +339,8 @@ Special cases:
 
 ```bash
 python scripts/render_radar.py \
-  --input projects-enriched.json \
-  --output growth-radar.png \
+  --input runs/YYYY-MM-DD/projects-enriched.json \
+  --output runs/YYYY-MM-DD/growth-radar.png \
   --title "Open Source AI: Growth Radar" \
   --subtitle "[N] Projects · [N] Categories · [Month Year]"
 ```
@@ -350,7 +357,7 @@ Select 3–4 callouts that tell different stories. Always use this pattern:
 3. **Biggest percentage growth** — highest growth rate among established projects (>10K stars baseline)
 4. **"Stars ≠ adoption"** — project where deployment metrics dramatically exceed star trajectory
 
-Save callouts as `callouts.json` and pass to the render script.
+Save callouts as `callouts.json` in the run directory and pass to the render script.
 
 **Output**: `growth-radar.png` at 200 DPI.
 
