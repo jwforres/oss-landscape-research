@@ -51,6 +51,7 @@ Search for candidate projects across these source types, in order:
 3. **Domain-specific rankings** — JS Rising Stars (automation/AI category), ODSC top repos, Runa Capital ROSS Index
 4. **Conference proceedings** — KubeCon, GTC, PyTorch Conference, PyCon — projects presented or announced
 5. **Foundation project lists** — CNCF, LF AI & Data, PyTorch Foundation member projects
+6. **Absolute star leaders** — Search for the most-starred GitHub repos created or reaching major milestones in the last 12 months across AI/ML topics. This catches projects that grow explosively but don't appear in topic-filtered trending lists due to unconventional categorization. Any AI-related repo with >50K stars that isn't already in the candidate list must be evaluated — it cannot be silently skipped.
 
 For each candidate project, record: name, GitHub URL, current star count, one-line description, primary language, tentative category.
 
@@ -82,7 +83,7 @@ Include a project if it meets ALL of:
 Exclude if ANY apply:
 - Mature incumbent with flat growth (>3 years old, <10% annual star growth, no major recent changes)
 - **Project entering maintenance mode or being sunset** — check for: active "future of X" GitHub issues, announced successor project, maintainer statements about winding down, repo archived or redirected. Examples from prior runs: AutoGen (→ Microsoft Agent Framework), torchtune (→ successor repo).
-- Application-layer wrapper or chat frontend
+- Application-layer wrapper or chat frontend — a project that **only** provides a UI on top of existing APIs/models with no independent infrastructure capabilities. Projects that expose agentic execution, plugin/skill systems, device integration, or workflow orchestration are infrastructure even if their primary interface is a chat UI.
 - Consumer tool, not enterprise/developer infrastructure
 - Diffusion/image-video generation (out of scope)
 - Proprietary or source-available (BSL, SSPL, Commons Clause, etc.)
