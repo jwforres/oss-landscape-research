@@ -138,6 +138,7 @@ For projects launched <6 months ago, two data points (launch + current) are acce
 ```json
 {
   "growth_tier": "📈|📊|⚡",
+  "viral_launch": false,
   "growth_trajectory": "accelerating|steady|decelerating",
   "growth_data": {
     "stars_t0": 32000,
@@ -172,6 +173,8 @@ For projects <6 months old, set trajectory to `"accelerating"` by default (insuf
 - **📊**: Growth signals exist but recent trajectory is flat or decelerating, OR growth lacks clean data points
 - **⚡**: Launched <6 months ago — score on trajectory slope, not percentage
 
+**Viral launch flag 🔥**: Set `"viral_launch": true` for any project created within the last 30 days of the report run date AND with >5K stars. This flag is temporal — it highlights what just dropped, not historical virality. Projects from prior runs that were once viral do not carry the flag forward.
+
 **Downgrade rule**: A project that qualified as 📈 based on overall numbers but has `growth_trajectory: "decelerating"` with recent 6mo growth <10% should be downgraded to 📊. This prevents the report from presenting stalling projects as fast-growing.
 
 **Checkpoint**: Save `projects-enriched.json`
@@ -186,7 +189,7 @@ Read `references/entry-format.md` for the exact entry format. Assemble the repor
 # Emerging Open Source AI Infrastructure — [Month Year]
 > A landscape scan of [N] projects across [N] categories, focused on emerging and
 > accelerating open-source projects relevant to enterprise AI platform teams.
-> 🔴 = Red Hat / IBM involvement flagged.
+> 🔴 = Red Hat / IBM involvement flagged. 🔥 = viral launch (<30 days old, >5K stars).
 
 ## [Category 1]
 ### [Project]
@@ -207,6 +210,7 @@ Read `references/entry-format.md` for the exact entry format. Assemble the repor
 
 - Every entry must have: License, Why it's notable, Growth & Community, Notable contributor(s), Area
 - Red Hat flagged projects: add 🔴 after the project name in the `###` heading
+- Viral launch projects: add 🔥 after the project name in the `###` heading (after 🔴 if both apply)
 - "Why it's notable" must explain WHAT it does AND WHY it matters — not just features
 - Growth data must include specific numbers with date ranges
 - **Growth trajectory is mandatory for pre-existing projects (>6 months old):** The Growth & Community section must state the recent trajectory direction and include both 6-month growth rates. Examples:
