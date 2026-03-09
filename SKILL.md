@@ -84,7 +84,7 @@ Include a project if it meets ALL of:
 Exclude if ANY apply:
 - Mature incumbent with flat growth (>3 years old, <10% annual star growth, no major recent changes)
 - **Project entering maintenance mode or being sunset** — check for: active "future of X" GitHub issues, announced successor project, maintainer statements about winding down, repo archived or redirected. Examples from prior runs: AutoGen (→ Microsoft Agent Framework), torchtune (→ successor repo).
-- Application-layer wrapper or chat frontend — a project that **only** provides a UI on top of existing APIs/models with no independent infrastructure capabilities. Projects that expose agentic execution, plugin/skill systems, device integration, or workflow orchestration are infrastructure even if their primary interface is a chat UI.
+- Application-layer wrapper or chat frontend — a project that **only** provides a UI on top of existing APIs/models with no independent infrastructure capabilities. Projects that expose agentic execution, plugin/skill systems, device integration, or workflow orchestration are infrastructure even if their primary interface is a chat UI. **However**, application-layer projects that demonstrate interesting platform workload patterns (multi-agent orchestration, GPU scheduling, real-time coordination) should be routed to the Reference Workloads section instead of silently excluded.
 - Consumer tool, not enterprise/developer infrastructure
 - Diffusion/image-video generation (out of scope)
 - Proprietary or source-available (BSL, SSPL, Commons Clause, etc.)
@@ -197,6 +197,17 @@ Read `references/entry-format.md` for the exact entry format. Assemble the repor
 
 ---
 
+## Reference Workloads
+> Application-layer projects excluded from the infrastructure landscape but worth
+> tracking as reference applications that demonstrate platform capabilities.
+
+### [Project] — [star count]
+[2-4 sentences: what it does, what platform capabilities it exercises (e.g., multi-agent
+orchestration, GPU scheduling, real-time serving, persistent storage), and why it's
+interesting as a showcase for the platform.]
+
+---
+
 ## Key Trends to Watch
 1. ...
 
@@ -220,6 +231,8 @@ Read `references/entry-format.md` for the exact entry format. Assemble the repor
   - Always end with an editorial interpretation of what the trajectory means (competitive pressure, post-viral normalization, category maturation, etc.)
 - Key Trends must reference specific projects from the report
 - Standards section always goes last before Key Trends
+- Reference Workloads section goes between the last infrastructure category and Key Trends
+- Reference Workload entries use `### [Project] — [star count]` format (no growth tier emoji). Each entry is 2–4 sentences explaining what the project does, what platform capabilities it would exercise (multi-agent orchestration, GPU scheduling, real-time serving, persistent storage, networking, etc.), and why it's an interesting showcase. Include the license and GitHub URL.
 - Include a Scope Note at the end explaining what's excluded (diffusion, mature incumbents, chat UIs, consumer tools, maintenance-mode projects)
 
 **Checkpoint**: Save `report-draft.md`
@@ -301,7 +314,8 @@ Run through before saving — do not skip:
 - [ ] Every project has Notable contributor(s) with role descriptor
 - [ ] Every project has Area tag
 - [ ] All Red Hat/IBM flags are marked with 🔴
-- [ ] Standards section is last before Key Trends
+- [ ] Standards section is last infrastructure category before Reference Workloads
+- [ ] Reference Workloads section exists between infrastructure categories and Key Trends, with at least one entry if any application-layer projects were excluded that demonstrate interesting platform patterns
 - [ ] Key Trends reference specific projects from the report by name
 - [ ] Scope Note explains exclusions
 - [ ] No duplicate projects
