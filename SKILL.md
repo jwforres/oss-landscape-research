@@ -52,7 +52,13 @@ Search for candidate projects across these source types, in order:
 4. **Conference proceedings** — KubeCon, GTC, PyTorch Conference, PyCon — projects presented or announced
 5. **Foundation project lists** — CNCF, LF AI & Data, PyTorch Foundation member projects
 6. **Absolute star leaders** — Search for the most-starred GitHub repos created or reaching major milestones in the last 12 months across AI/ML topics. This catches projects that grow explosively but don't appear in topic-filtered trending lists due to unconventional categorization. Any AI-related repo with >50K stars that isn't already in the candidate list must be evaluated — it cannot be silently skipped.
-7. **Viral launches** — Search for GitHub repos created in the last 30 days with >5K stars. Any repo matching this velocity threshold must be evaluated regardless of topic tags or categorization. This catches projects that grow explosively from creator reputation, social media virality, or major announcements before any ranking list indexes them.
+7. **Viral launches** — Run the viral launch finder script to query the GitHub API directly for recently-created repos with high star counts. Do NOT rely on web searches for this — web indexes lag days behind viral launches.
+
+```bash
+python scripts/find_viral_launches.py --days 30 --min-stars 5000
+```
+
+Any repo in the output must be evaluated regardless of topic tags or categorization. This catches projects that grow explosively from creator reputation, social media virality, or major announcements before any ranking list indexes them. The script searches across multiple AI-related topic filters and a broad keyword fallback to maximize coverage.
 
 For each candidate project, record: name, GitHub URL, current star count, one-line description, primary language, tentative category.
 
