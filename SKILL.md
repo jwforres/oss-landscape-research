@@ -312,6 +312,23 @@ After both reviews return, apply these rules without user input:
 2. Write the entry in identical format to existing entries
 3. Add to appropriate category, or create new category if `new_category_needed: true`
 
+### Week-over-week comparison (if prior run exists)
+
+Check for a previous run by listing `runs/` directories, sorting lexicographically, and selecting the most recent directory **before** the current run. If one exists and contains `projects-enriched.json`, generate the comparison:
+
+```bash
+python scripts/compare_runs.py \
+  --previous runs/PRIOR-DATE/projects-enriched.json \
+  --current  runs/YYYY-MM-DD/projects-enriched.json \
+  --output   runs/YYYY-MM-DD/changes.md
+```
+
+Then insert the contents of `changes.md` into `report-final.md` immediately after the header block (after the `> 🔴 = Red Hat...` line and its `---` separator) and before the first category heading. This gives executives a scannable summary of what changed before they dive into the full report.
+
+After inserting, review the generated section and add 1-2 sentences of editorial context to the notable additions and removals — the script provides the data but the "why it matters" context comes from the report author. For example, annotate new entries with what they do and why they were added, and annotate removals with why they were dropped (license issue, reclassified, replaced by stronger entry, etc.).
+
+If no prior run exists, skip this step — the report is the first run and needs no comparison section.
+
 ### Structural adjustments to always apply:
 
 - Standards/interoperability section goes last (before Key Trends) — it's cross-cutting
