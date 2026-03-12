@@ -177,6 +177,22 @@ For projects <6 months old, set trajectory to `"accelerating"` by default (insuf
 
 **Downgrade rule**: A project that qualified as 📈 based on overall numbers but has `growth_trajectory: "decelerating"` with recent 6mo growth <10% should be downgraded to 📊. This prevents the report from presenting stalling projects as fast-growing.
 
+### Star count verification (mandatory)
+
+After enrichment is complete, run the verification script to validate all current star counts against the live GitHub API:
+
+```bash
+python scripts/verify_stars.py --input runs/YYYY-MM-DD/projects-enriched.json --fix --threshold 10
+```
+
+This corrects the `stars` field in-place using `gh api repos/{owner}/{repo}` for each project. Web searches return cached, stale, or hallucinated star counts from blog posts and ranking articles — the GitHub API is the only reliable source for current values.
+
+**Important:**
+- Do NOT use web search results for current star counts. Web sources are routinely months out of date or simply wrong.
+- Historical star counts (T0, T1) still come from web research (star-history.com, blog posts, changelogs) since the API only returns the current value.
+- If the script reports errors (404s), investigate — the GitHub URL in the JSON may be wrong (repo renamed, org changed, or the project uses a different repo than expected).
+- If a star count correction changes a project's position enough to affect its growth tier (e.g., actual growth is >15% when the stale data showed <10%), update the `growth_tier` accordingly.
+
 **Checkpoint**: Save `projects-enriched.json`
 
 ---
@@ -332,6 +348,16 @@ Run through before saving — do not skip:
 ## Phase 7: Growth Radar PNG
 
 Generate the executive scatter chart. Read `references/radar-chart.md` for the full rendering spec.
+
+### Pre-render star count verification
+
+Before rendering, re-run the verification script to ensure all star counts are current (gap fills in Phase 6 may have introduced stale data):
+
+```bash
+python scripts/verify_stars.py --input runs/YYYY-MM-DD/projects-enriched.json --fix --threshold 10
+```
+
+If any corrections are made, also update the corresponding numbers in `report-final.md` before proceeding.
 
 ### Data extraction from projects-enriched.json
 
