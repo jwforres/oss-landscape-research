@@ -51,14 +51,14 @@ Search for candidate projects across these source types, in order:
 3. **Domain-specific rankings** — JS Rising Stars (automation/AI category), ODSC top repos, Runa Capital ROSS Index
 4. **Conference proceedings** — KubeCon, GTC, PyTorch Conference, PyCon — projects presented or announced
 5. **Foundation project lists** — CNCF, LF AI & Data, PyTorch Foundation member projects
-6. **Absolute star leaders** — Search for the most-starred GitHub repos created or reaching major milestones in the last 12 months across AI/ML topics. This catches projects that grow explosively but don't appear in topic-filtered trending lists due to unconventional categorization. Any AI-related repo with >50K stars that isn't already in the candidate list must be evaluated — it cannot be silently skipped.
-7. **Viral launches** — Run the viral launch finder script to query the GitHub API directly for recently-created repos with high star counts. Do NOT rely on web searches for this — web indexes lag days behind viral launches.
+6. **Absolute star leaders** — Search for the most-starred GitHub repos created or reaching major milestones in the last 12 months across AI/ML topics. This catches projects that grow explosively but don't appear in topic-filtered trending lists due to unconventional categorization. Any AI-related repo with >20K stars that isn't already in the candidate list must be evaluated — it cannot be silently skipped.
+7. **Viral launches & surging repos** — Run the viral launch finder script to query the GitHub API directly for (a) recently-created repos with high star counts and (b) older repos with recent star velocity spikes (catches relaunches and major version rewrites like DeerFlow v2). Do NOT rely on web searches for this — web indexes lag days behind viral launches.
 
 ```bash
-python scripts/find_viral_launches.py --days 30 --min-stars 5000
+python scripts/find_viral_launches.py --days 30 --min-stars 5000 --surge --surge-min-stars 10000
 ```
 
-Any repo in the output must be evaluated regardless of topic tags or categorization. This catches projects that grow explosively from creator reputation, social media virality, or major announcements before any ranking list indexes them. The script searches across multiple AI-related topic filters and a broad keyword fallback to maximize coverage.
+Any repo in the output (both 🔥 new launches and 🚀 surging repos) must be evaluated regardless of topic tags or categorization. This catches projects that grow explosively from creator reputation, social media virality, major rewrites, or announcements before any ranking list indexes them. The script searches across multiple AI-related topic filters and a broad keyword fallback to maximize coverage. The `--surge` flag enables relaunch detection — it finds older repos where a large fraction of recent stargazers starred within the lookback window, indicating a viral moment despite the repo not being newly created.
 
 For each candidate project, record: name, GitHub URL, current star count, one-line description, primary language, tentative category.
 
