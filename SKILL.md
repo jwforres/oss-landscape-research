@@ -52,7 +52,7 @@ Search for candidate projects across these source types, in order:
 4. **Conference proceedings** — KubeCon, GTC, PyTorch Conference, PyCon — projects presented or announced
 5. **Foundation project lists** — CNCF, LF AI & Data, PyTorch Foundation member projects
 6. **Absolute star leaders** — Search for the most-starred GitHub repos created or reaching major milestones in the last 12 months across AI/ML topics. This catches projects that grow explosively but don't appear in topic-filtered trending lists due to unconventional categorization. Any AI-related repo with >20K stars that isn't already in the candidate list must be evaluated — it cannot be silently skipped.
-7. **Viral launches & surging repos** — Run the viral launch finder script to query the GitHub API directly for (a) recently-created repos with high star counts and (b) older repos with recent star velocity spikes (catches relaunches and major version rewrites like DeerFlow v2). Do NOT rely on web searches for this — web indexes lag days behind viral launches.
+7. **Viral launches & surging repos** — Run the viral launch finder script to query the GitHub API directly for (a) recently-created repos with high star counts and (b) older repos with recent star velocity spikes (catches relaunches and major version rewrites). Do NOT rely on web searches for this — web indexes lag days behind viral launches.
 
 ```bash
 python scripts/find_viral_launches.py --days 30 --min-stars 5000 --surge --surge-min-stars 10000

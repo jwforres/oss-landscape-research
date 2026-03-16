@@ -6,7 +6,7 @@ Two modes:
   1. New launches: recently-created repos with high star counts (default)
   2. Surging repos: older repos with high recent star velocity (--surge mode)
 
-The surge mode catches relaunches/rewrites (e.g., DeerFlow v2) that go viral
+The surge mode catches relaunches and major version rewrites that go viral
 but aren't new repos, so they'd be missed by creation-date filtering alone.
 
 Usage:
@@ -154,8 +154,8 @@ def find_surging_repos(cutoff, min_stars, excluded):
     """Find older repos with high star counts that were recently active.
 
     Catches relaunches, major version rewrites, and projects that go viral
-    long after initial creation (e.g., DeerFlow v2, a May 2025 repo that
-    went #1 trending in Feb 2026 after a ground-up rewrite).
+    long after initial creation (e.g., a major version rewrite that goes
+    #1 trending despite the repo being months or years old).
 
     Uses star-banded searches sorted by 'updated' to avoid being dominated
     by mega-repos (PyTorch, TensorFlow) that push smaller surging repos
@@ -163,7 +163,7 @@ def find_surging_repos(cutoff, min_stars, excluded):
     secondary rate limit (~30 requests/minute for search).
     """
     # Star bands ensure we don't just get the top 30 biggest repos.
-    # Two bands: one for mid-range (where DeerFlow-class projects live)
+    # Two bands: one for mid-range (10K-50K stars)
     # and one for large repos. Keeps total query count manageable.
     star_bands = [
         f"{min_stars}..50000",
