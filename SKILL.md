@@ -157,6 +157,12 @@ For projects launched <6 months ago, two data points (launch + current) are acce
     "growth_pct_t1_t2": 23,
     "other_signals": ["Octoverse top-10", "400K+ GPU deployments"]
   },
+  "adoption_data": {
+    "package_manager": "pypi|npm|docker|crates|null",
+    "package_name": "example-pkg",
+    "downloads_monthly": 55000,
+    "adoption_risk": false
+  },
   "notable_contributors": [
     { "name": "Red Hat/Neural Magic", "role": "primary commercial", "redhat": true }
   ],
@@ -181,7 +187,9 @@ For projects <6 months old, set trajectory to `"accelerating"` by default (insuf
 
 **Viral launch flag 🔥**: Set `"viral_launch": true` for any project created within the last 30 days of the report run date AND with >5K stars. This flag is temporal — it highlights what just dropped, not historical virality. Projects from prior runs that were once viral do not carry the flag forward.
 
-**Downgrade rule**: A project that qualified as 📈 based on overall numbers but has `growth_trajectory: "decelerating"` with recent 6mo growth <10% should be downgraded to 📊. This prevents the report from presenting stalling projects as fast-growing.
+**Downgrade rule (deceleration)**: A project that qualified as 📈 based on overall numbers but has `growth_trajectory: "decelerating"` with recent 6mo growth <10% should be downgraded to 📊. This prevents the report from presenting stalling projects as fast-growing.
+
+**Downgrade rule (adoption risk)**: A project with >15K stars and `adoption_risk: true` that qualified as 📈 should be downgraded to 📊. High stars with negligible real-world downloads suggests interest without adoption.
 
 ### Star count verification (mandatory)
 
@@ -198,6 +206,25 @@ This corrects the `stars` field in-place using `gh api repos/{owner}/{repo}` for
 - Historical star counts (T0, T1) still come from web research (star-history.com, blog posts, changelogs) since the API only returns the current value.
 - If the script reports errors (404s), investigate — the GitHub URL in the JSON may be wrong (repo renamed, org changed, or the project uses a different repo than expected).
 - If a star count correction changes a project's position enough to affect its growth tier (e.g., actual growth is >15% when the stale data showed <10%), update the `growth_tier` accordingly.
+
+### Adoption metrics check (mandatory)
+
+After star verification, check package manager download stats for every project that distributes via a package manager:
+
+- **PyPI**: Check https://clickpy.clickhouse.com/dashboard/{package_name} for monthly downloads
+- **npm**: Check `https://api.npmjs.org/downloads/point/last-month/{package_name}` for monthly downloads
+- **Docker Hub**: Check `https://hub.docker.com/v2/repositories/{owner}/{name}/` for pull count
+- **crates.io**: Check `https://crates.io/api/v1/crates/{crate_name}` for total downloads
+
+To find the package name, check the project's `pyproject.toml`, `setup.py`, `package.json`, or `Cargo.toml`.
+
+Record in `adoption_data`:
+- `package_manager`: which registry (or `null` if the project is clone-and-run with no package)
+- `package_name`: the registered package name
+- `downloads_monthly`: monthly download count (or total for registries that only report totals)
+- `adoption_risk`: set to `true` if the project has >15K stars AND a published package with <1K downloads/month. Set to `null` if no package exists (not applicable). Set to `false` otherwise.
+
+Projects without a package (clone-and-run applications, frameworks you deploy from source) get `adoption_risk: null` — absence of a package is not a risk signal.
 
 **Checkpoint**: Save `projects-enriched.json`
 
@@ -251,6 +278,7 @@ interesting as a showcase for the platform.]
   - Steady: "Growth remains steady at ~17-20% per 6-month period."
   - Accelerating: "Growth is accelerating: ~15% in Mar–Sep 2025, increasing to ~28% in Sep 2025–Mar 2026."
   - Always end with an editorial interpretation of what the trajectory means (competitive pressure, post-viral normalization, category maturation, etc.)
+- **Adoption risk**: When `adoption_risk` is true, the Growth & Community section must note the stars-to-downloads divergence with specific numbers (e.g., "Despite 27K stars, crate downloads remain at ~2K total, suggesting limited production adoption."). State the gap factually — don't editorialize beyond that.
 - Key Trends must reference specific projects from the report
 - Standards section always goes last before Key Trends
 - Reference Workloads section goes between the last infrastructure category and Key Trends
