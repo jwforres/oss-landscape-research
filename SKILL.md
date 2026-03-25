@@ -345,8 +345,11 @@ After both reviews return, apply these rules without user input:
 1. Research using the same Phase 1–3 methodology (web search, license verify, growth metrics)
 2. Write the entry in identical format to existing entries
 3. Add to appropriate category, or create new category if `new_category_needed: true`
+4. **Add the new project to `projects-enriched.json` before proceeding** — the comparison script reads this file, so all gap-fill projects must be present in the JSON before the week-over-week comparison runs
 
 ### Week-over-week comparison (if prior run exists)
+
+**Important: Run this AFTER all gap-fill projects have been added to `projects-enriched.json`.** The comparison script diffs the previous and current JSON files, so any projects not yet in the JSON will be missing from the changes summary.
 
 Check for a previous run by listing `runs/` directories, sorting lexicographically, and selecting the most recent directory **before** the current run. If one exists and contains `projects-enriched.json`, generate the comparison:
 
