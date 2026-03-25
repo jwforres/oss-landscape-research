@@ -95,6 +95,15 @@ Exclude if ANY apply:
 - Diffusion/image-video generation (out of scope)
 - Proprietary or source-available (BSL, SSPL, Commons Clause, etc.)
 
+### URL consistency check (if prior run exists)
+
+If a previous run's `projects-enriched.json` exists, compare GitHub URLs for every project that appears in both runs (matched by name). If a project's URL changed between runs, **investigate the discrepancy** before proceeding:
+
+- **Legitimate changes**: repo renamed, transferred to a different org, or project migrated to a new repo. Confirm by checking whether the old URL redirects to the new one (`gh api repos/{old-owner}/{old-repo}` — GitHub returns the canonical name if redirected).
+- **Misidentification**: web search returned a different project with a similar name. This is the common failure mode for projects with generic names. In this case, keep the URL from the previous run and verify it still exists.
+
+Log any URL changes and their resolution in the checkpoint file.
+
 **Checkpoint**: Save `projects-raw.json`
 
 ---
